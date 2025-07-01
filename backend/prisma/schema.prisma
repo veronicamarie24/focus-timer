@@ -3,10 +3,48 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
 }
 
 datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  tasks   Task[]
+  sessions Session[]
+}
+
+model Task {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  completed   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  userId  String
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sessions Session[]
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  startTime DateTime
+  endTime   DateTime?
+  duration  Int      // Duration in seconds
+  completed Boolean  @default(false)
+  createdAt DateTime @default(now())
+  
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  taskId String?
+  task   Task?  @relation(fields: [taskId], references: [id], onDelete: SetNull)
 }
