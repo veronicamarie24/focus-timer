@@ -10,17 +10,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  name      String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  
-  tasks   Task[]
-  sessions Session[]
-}
-
 model Task {
   id          String   @id @default(cuid())
   title       String
@@ -29,21 +18,17 @@ model Task {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   
-  userId  String
-  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   sessions Session[]
 }
 
 model Session {
-  id        String   @id @default(cuid())
-  startTime DateTime
-  endTime   DateTime?
-  duration  Int      // Duration in seconds
-  completed Boolean  @default(false)
-  createdAt DateTime @default(now())
-  
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id            String    @id @default(cuid())
+  startTime     DateTime  @default(now())
+  endTime       DateTime?
+  duration      Int       // Intended duration in seconds
+  timerCheckIn  DateTime  @default(now())
+  completed     Boolean   @default(false)
+  createdAt     DateTime  @default(now())
   
   taskId String?
   task   Task?  @relation(fields: [taskId], references: [id], onDelete: SetNull)

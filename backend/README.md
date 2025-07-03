@@ -1,4 +1,10 @@
+# Backend
+
+
 ## Database Management
+The SQLite database file lives locally (/dev.db by default).
+Changes to the schema require running a migration.
+Store prisma/migrations in Git to track schema changes.
 
 - **Provider**: SQLite (file-based, no server required)
 - **ORM**: Prisma
@@ -11,26 +17,3 @@
 - `npx prisma generate` - Generate Prisma client
 - `npx prisma db push` - Push schema changes without migrations
 - `npx prisma db seed` - Seed database with initial data (if configured)
-
-## API Development
-
-The backend provides a REST API that the frontend can consume:
-
-1. **Define Models**: Add your data models in `prisma/schema.prisma`
-2. **Create Routes**: Add API endpoints in `src/index.ts`
-3. **Database Operations**: Use Prisma Client for database interactions
-4. **Testing**: Test endpoints with tools like Postman, curl, or Thunder Client
-
-### Example API Route
-
-```typescript
-// In backend/src/index.ts
-app.get('/api/users', async (req, res) => {
-  try {
-    const users = await prisma.user.findMany();
-    res.json(users);
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch users' });
-  }
-});
-```

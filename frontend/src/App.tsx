@@ -1,7 +1,7 @@
-import Welcome from './components/Welcome';
+import Container from './components/Container';
 
 function App() {
-  return <Welcome />
+  return <Container />
 }
 
 export default App
